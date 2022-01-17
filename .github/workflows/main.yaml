@@ -1,0 +1,30 @@
+name: scrawl
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  main:
+    name: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      matrix:
+        config:
+          - {os: ubuntu-latest}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          stable: false
+          go-version: '1.17'
+      - name: Test
+        run: make test
+      - name: Package
+        run: make package

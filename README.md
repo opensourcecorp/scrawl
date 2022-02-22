@@ -10,7 +10,7 @@
 
 `scrawl` is a simple tool for taking Markdown-driven notes. It can either be run
 entirely locally, or set up to sync with a remote server that YOU control -- no
-options for paid hosting, and no extra cost for the tool & its services.
+options for paid hosting, and no extra cost for the tool & its functionality.
 
 ## Installation
 

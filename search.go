@@ -8,7 +8,9 @@ import (
 	"strings"
 )
 
-func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) map[string][]string {
+type tagMap map[string][]string
+
+func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) tagMap {
 	// Only ONE of these flags can be specified, so flip anyTags off if allTags is spec'd
 	// Fun fact: staticcheck rule won't let me do anyTags = !allTags, yeesh
 	if allTags {
@@ -35,7 +37,7 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) map[string]
 	}
 
 	wantTags := strings.Split(wantTagsArg, ",")
-	matchingTags := make(map[string][]string)
+	matchingTags := make(tagMap)
 	for _, filename := range filenames {
 		contentsRaw, err := os.ReadFile(filename)
 		if err != nil {
@@ -43,23 +45,22 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) map[string]
 		}
 
 		contents := strings.Split(string(contentsRaw), "\n")
+		tagsInFile := getTagsFromFileContents(contents)
 
-		var tagsInFile []string
-		for _, line := range contents {
-			tagPattern := regexp.MustCompile("^tags:.*$")
-			if tagPattern.MatchString(line) {
-				// TODO: what if there's more than one space between tags in the file?
-				// Should be an easy fix, but just chasing MVP right now
-				tagLine := strings.ReplaceAll(line, " ", ",")
-				tagsInFile = strings.Split(tagLine, ",")
-				break
+		// If searching for untagged notes, record the filename and skip to the next one
+		if untagged {
+			if len(tagsInFile) == 0 {
+				matchingTags[filename] = []string{}
+				continue
 			}
 		}
 
 		for _, gotTag := range tagsInFile {
 			if anyTags {
 				if containsStringValue(wantTags, gotTag) {
-					matchingTags[filename] = append(matchingTags[filename], gotTag)
+					// matchingTags[filename] = append(matchingTags[filename], gotTag) // this will only store the tag it found, not all tags in the file
+					matchingTags[filename] = tagsInFile
+					break
 				}
 			} else if allTags {
 				fmt.Println("ERROR: -all tag search is not yet implemented")
@@ -68,15 +69,22 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) map[string]
 		}
 	}
 
-	fmt.Println(matchingTags)
 	return matchingTags
 }
 
-func containsStringValue(slice []string, value string) bool {
-	for _, e := range slice {
-		if e == value {
-			return true
+func getTagsFromFileContents(contents []string) []string {
+	var tags []string
+	for _, line := range contents {
+		tagPattern := regexp.MustCompile("^tags:.*$")
+		if tagPattern.MatchString(line) {
+			// TODO: what if there's more than one space between tags in the file?
+			// Should be an easy fix, but just chasing MVP right now
+			tagLine := line
+			tagLine = strings.ReplaceAll(tagLine, "tags: ", "")
+			tagLine = strings.ReplaceAll(tagLine, " ", "")
+			tags = strings.Split(tagLine, ",")
+			break
 		}
 	}
-	return false
+	return tags
 }

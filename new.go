@@ -16,7 +16,7 @@ func newNote() {
 		editor = "nano"
 	}
 
-	filepath := makeNoteFilepath()
+	filepath := constructNoteFilepath()
 	cmd := exec.Command(editor, filepath)
 
 	// Need to set these so that the user has interactive access to the `EDITOR`
@@ -30,14 +30,15 @@ func newNote() {
 	}
 }
 
-func makeNoteFilepath() string {
+// makeNoteFilepath does not actually
+func constructNoteFilepath() string {
 	var timestamp string
 	timestamp = time.Now().Format(time.RFC3339)
 	timestamp = strings.ReplaceAll(timestamp, ":", "-")
 	// Something's off between the time package in the Playgound & locally, and
 	// how they're representing the same time format -- so, only keep the first
-	// 20 characters of the timestamp and drop all the garbage at the end, in
-	// case it creates it
+	// 19 characters of the timestamp and drop all the garbage at the end in
+	// case it creates any
 	timestamp = timestamp[:19]
 	filepath := fmt.Sprintf("%s/%s.md", getScrawldir(), timestamp)
 	return filepath

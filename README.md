@@ -1,7 +1,7 @@
 # scrawl
 
 <!-- badges: start -->
-![Github Actions](https://github.com/opensourcecorp/scrawl/actions/workflows/main.yaml/badge.svg)
+[![Github Actions](https://github.com/opensourcecorp/scrawl/actions/workflows/main.yaml/badge.svg)](https://github.com/opensourcecorp/scrawl/actions)
 
 [![Support OpenSourceCorp on Ko-Fi!](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/ryapric)
 <!-- badges: end -->

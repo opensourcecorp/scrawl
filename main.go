@@ -24,6 +24,9 @@ func main() {
 	} else {
 		switch os.Args[1] {
 
+		case "-h", "-help", "--help", "help":
+			showHelp(0)
+
 		case "new":
 			newCmd.Parse(os.Args[2:])
 			newNote()

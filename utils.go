@@ -12,7 +12,7 @@ import (
 
 func showHelp(exitCode int) {
 	helpText := fmt.Sprintln(`
-Usage: scrawl [-h | --help] [new | search [--any (default) | --all] <tags> | search --untagged]
+Usage: scrawl [help] [new | search [--any (default) | --all] <tags> | --untagged]
 
 scrawl is a simple note-taking application. By running:
 

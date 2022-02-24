@@ -14,11 +14,12 @@ func showHelp(exitCode int) {
 	helpText := fmt.Sprintln(`
 Usage: scrawl [help] [new | search [--any (default) | --all] <tags> | --untagged]
 
-scrawl is a simple note-taking application. By running:
+scrawl is a simple note-taking application that supports tagging. By running:
 
 	scrawl new
 
-you will enter your editor ($EDITOR) to take notes.
+you will enter your editor (as defined by $EDITOR) to take notes. scrawl will
+fall back to the nano editor if the $EDITOR env var is not defined.
 
 scrawl note files expect your note's tags to appear as a comma-separated list of
 tag values, specified as in this example:
@@ -28,7 +29,7 @@ tag values, specified as in this example:
 	# ...
 
 The tag spec can appear anywhere in the file, but it's probably best to put them
-up top. You can then search for notes with certain tags via:
+at or near the top. You can then search for notes with certain tags via:
 
 	scrawl search [--any (default) | --all] <tags>
 
@@ -87,12 +88,5 @@ func printSortedTagMap(tm tagMap) {
 	sort.Strings(keys)
 	for _, k := range keys {
 		fmt.Println(k, tm[k])
-	}
-}
-
-func setTestScrawldir() {
-	err := os.Setenv("SCRAWLDIR", "./testdata")
-	if err != nil {
-		panic(err)
 	}
 }

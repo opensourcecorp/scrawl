@@ -5,13 +5,13 @@ import (
 )
 
 func TestSearchTagsAnyFlagEmptyString(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	want := tagMap{
-		"testdata/tags-dev-todo.md":  []string{"dev", "todo"},
-		"testdata/tags-dev-work.md":  []string{"dev", "work"},
-		"testdata/tags-dev.md":       []string{"dev"},
-		"testdata/tags-work-todo.md": []string{"work", "todo"},
+		"testdata/tags/dev-todo.md":  []string{"dev", "todo"},
+		"testdata/tags/dev-work.md":  []string{"dev", "work"},
+		"testdata/tags/dev.md":       []string{"dev"},
+		"testdata/tags/work-todo.md": []string{"work", "todo"},
 	}
 
 	got := searchTags(true, false, false, "")
@@ -20,12 +20,12 @@ func TestSearchTagsAnyFlagEmptyString(t *testing.T) {
 }
 
 func TestSearchTagsAnyFlagOneTag(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	want := tagMap{
-		"testdata/tags-dev-todo.md": []string{"dev", "todo"},
-		"testdata/tags-dev-work.md": []string{"dev", "work"},
-		"testdata/tags-dev.md":      []string{"dev"},
+		"testdata/tags/dev-todo.md": []string{"dev", "todo"},
+		"testdata/tags/dev-work.md": []string{"dev", "work"},
+		"testdata/tags/dev.md":      []string{"dev"},
 	}
 
 	got := searchTags(true, false, false, "dev")
@@ -34,11 +34,11 @@ func TestSearchTagsAnyFlagOneTag(t *testing.T) {
 }
 
 func TestSearchTagsAnyFlagOneTagRegex(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	want := tagMap{
-		"testdata/tags-dev-work.md":  []string{"dev", "work"},
-		"testdata/tags-work-todo.md": []string{"work", "todo"},
+		"testdata/tags/dev-work.md":  []string{"dev", "work"},
+		"testdata/tags/work-todo.md": []string{"work", "todo"},
 	}
 
 	got := searchTags(true, false, false, "wor.*")
@@ -47,10 +47,10 @@ func TestSearchTagsAnyFlagOneTagRegex(t *testing.T) {
 }
 
 func TestSearchTagsUntagged(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	want := tagMap{
-		"testdata/tags-untagged.md": []string{},
+		"testdata/tags/untagged.md": []string{},
 	}
 
 	got := searchTags(true, false, true, "")
@@ -59,7 +59,7 @@ func TestSearchTagsUntagged(t *testing.T) {
 }
 
 func TestGetTagsFromFileContentsOneTag(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	contents := []string{
 		"tags: dev",
@@ -74,7 +74,7 @@ func TestGetTagsFromFileContentsOneTag(t *testing.T) {
 }
 
 func TestGetTagsFromFileContentsMultipleTags(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	contents := []string{
 		"tags: dev, work",

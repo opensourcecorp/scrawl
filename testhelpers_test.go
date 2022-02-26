@@ -1,5 +1,6 @@
-// Helpers for tests across the package
 package main
+
+// Helpers for tests across the package
 
 import (
 	"os"
@@ -8,15 +9,15 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func setTestScrawldir() {
-	err := os.Setenv("SCRAWLDIR", "./testdata")
+func setTestScrawldir(testGroup string) {
+	err := os.Setenv("SCRAWLDIR", "./testdata/"+testGroup)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func cmpEqualWantGot(t *testing.T, got, want interface{}) {
+func cmpEqualWantGot(t *testing.T, want, got interface{}) {
 	if !cmp.Equal(want, got) {
-		t.Errorf("\nwant: %v\ngot:%v\n", want, got)
+		t.Errorf("\nwant: %v\ngot:  %v\n", want, got)
 	}
 }

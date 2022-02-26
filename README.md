@@ -8,9 +8,9 @@
 
 `[ In Progress during development ]`
 
-`scrawl` is a simple tool for taking Markdown-driven notes. It can either be run
-entirely locally, or set up to sync with a remote server that YOU control -- no
-options for paid hosting, and no extra cost for the tool & its functionality.
+`scrawl` is a simple tool for taking notes with tagging support. It is designed
+to be run entirely locally, and in the future will also have a self-contained
+sync mechanism for syncing your notes across devices.
 
 ## Installation
 
@@ -40,4 +40,4 @@ TBD.
 
 ## Roadmap Notes
 
-- TBD.
+* TBD.

@@ -7,7 +7,7 @@ all: test
 
 .PHONY: test
 test:
-	@go test -v ./...
+	@go test -v -cover ./...
 
 .PHONY: build
 build: clean

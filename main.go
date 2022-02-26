@@ -1,12 +1,14 @@
+package main
+
 // Command-line parsing for subcommands inspired from here:
 // https://gobyexample.com/command-line-subcommands
 // I really wanted to get the following approach working, but it's not kicking off the external command to start the editor (but, it's still commented out in here to maybe try again later):
 // https://www.digitalocean.com/community/tutorials/how-to-use-the-flag-package-in-go
-package main
 
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -19,7 +21,7 @@ func main() {
 	searchUntagged := searchCmd.Bool("untagged", false, "Search for notes that are missing tags")
 
 	if len(os.Args) < 2 {
-		fmt.Printf(">>> ERROR: no command specified\n\n")
+		fmt.Printf("no command specified\n\n")
 		showHelp(1)
 	} else {
 		switch os.Args[1] {
@@ -39,19 +41,17 @@ func main() {
 			printSortedTagMap(gotTagMap)
 
 		case "render":
-			fmt.Println(">>> ERROR: not yet implemented")
-			os.Exit(1)
+			render()
 
 		case "web":
-			fmt.Println(">>> ERROR: not yet implemented")
-			os.Exit(1)
+			log.Fatal("not yet implemented")
 
 		case "sync":
-			fmt.Println(">>> ERROR: not yet implemented")
-			os.Exit(1)
+			log.Fatal("self-contained sync is not yet implemented; in the meantime, have you checked out Syncthing? https://syncthing.net")
+			// syncNotes()
 
 		default:
-			fmt.Printf(">>> ERROR: must specify a valid command\n\n")
+			fmt.Printf("must specify a valid command\n\n")
 			showHelp(1)
 		}
 	}

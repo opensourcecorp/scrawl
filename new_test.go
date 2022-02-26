@@ -6,7 +6,7 @@ import (
 )
 
 func TestMakeNoteFilepathLength(t *testing.T) {
-	setTestScrawldir()
+	setTestScrawldir("tags")
 
 	scrawldirLength := len(os.Getenv("SCRAWLDIR")) + 1 // directory length plus separator
 	want := scrawldirLength + 19 + 3                   // timestamp length plus extension

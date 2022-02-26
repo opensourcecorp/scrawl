@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -11,7 +12,7 @@ import (
 )
 
 func showHelp(exitCode int) {
-	helpText := fmt.Sprintln(`
+	helpText := `
 Usage: scrawl [help] [new | search [--any (default) | --all] <tags> | --untagged]
 
 scrawl is a simple note-taking application that supports tagging. By running:
@@ -36,7 +37,7 @@ at or near the top. You can then search for notes with certain tags via:
 By default, all notes end up as filepaths named '$HOME/scrawl/[timestamp].md'.
 You can override the root directory by setting the 'SCRAWLDIR' environment
 variable.
-	`)
+`
 	fmt.Println(strings.TrimSpace(helpText))
 	os.Exit(exitCode)
 }
@@ -49,17 +50,14 @@ func getScrawldir() string {
 	if scrawldir = os.Getenv("SCRAWLDIR"); scrawldir == "" {
 		user, err := user.Current()
 		if err != nil {
-			fmt.Println("ERROR: could not determine home directory for current user, and SCRAWLDIR var not found, so cannot set a directory for scrawl to use")
-			os.Exit(1)
+			log.Fatalf("could not determine home directory for current user, and SCRAWLDIR var not found, so cannot set a directory for scrawl to use\n%v", err)
 		}
 		homedir := user.HomeDir
 		scrawldir = filepath.Join(homedir, "scrawl")
 	}
 
-	err := os.MkdirAll(scrawldir, 0755)
-	if err != nil {
-		fmt.Printf("ERROR: Could not create SCRAWLDIR (%s)\n", scrawldir)
-		os.Exit(1)
+	if err := os.MkdirAll(scrawldir, 0755); err != nil {
+		log.Fatalf("could not create SCRAWLDIR (%s)\n%v", scrawldir, err)
 	}
 
 	return scrawldir

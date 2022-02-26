@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -27,13 +27,14 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) tagMap {
 
 	files, err := os.ReadDir(scrawldir)
 	if err != nil {
-		fmt.Println("ERROR: could not access SCRAWLDIR files")
-		os.Exit(1)
+		log.Fatalf("could not access SCRAWLDIR files\n%v", err)
 	}
 
 	var filenames []string
 	for _, file := range files {
-		filenames = append(filenames, filepath.Join(scrawldir, file.Name()))
+		if !file.IsDir() {
+			filenames = append(filenames, filepath.Join(scrawldir, file.Name()))
+		}
 	}
 
 	wantTags := strings.Split(wantTagsArg, ",")
@@ -41,7 +42,7 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) tagMap {
 	for _, filename := range filenames {
 		contentsRaw, err := os.ReadFile(filename)
 		if err != nil {
-			fmt.Printf("ERROR: error while reading file %s\n", filename)
+			log.Fatalf("error while reading file %s\n%v", filename, err)
 		}
 
 		contents := strings.Split(string(contentsRaw), "\n")
@@ -63,8 +64,7 @@ func searchTags(anyTags, allTags, untagged bool, wantTagsArg string) tagMap {
 					break
 				}
 			} else if allTags {
-				fmt.Println("ERROR: -all tag search is not yet implemented")
-				os.Exit(1)
+				log.Fatal("-all tag search is not yet implemented")
 			}
 		}
 	}

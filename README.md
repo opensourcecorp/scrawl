@@ -8,9 +8,9 @@
 
 `[ In Progress during development ]`
 
-`scrawl` is a simple tool for taking notes with tagging support. It is designed
-to be run entirely locally, and in the future will also have a self-contained
-sync mechanism for syncing your notes across devices.
+`scrawl` is a simple tool for taking notes with tag search support. It is
+designed to be run entirely locally, and in the future will also have a
+self-contained sync mechanism for syncing your notes across devices.
 
 ## Installation
 

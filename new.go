@@ -28,6 +28,8 @@ func newNote() {
 		fmt.Println("ERROR: error running editor program")
 		os.Exit(1)
 	}
+
+	fmt.Printf("Wrote new note to %s\n", filepath)
 }
 
 // makeNoteFilepath does not actually

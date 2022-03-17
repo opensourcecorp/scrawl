@@ -3,17 +3,17 @@ SHELL = /usr/bin/env bash
 PKGNAME := scrawl
 BINNAME := scrawl
 
+.PHONY: %
+
 all: test
 
-.PHONY: test
 test:
 	@go test -v -cover ./...
 
-.PHONY: build
 build: clean
-	@go build -o build/$(BINNAME)
+	@mkdir -p build/$$(go env GOOS)-$$(go env GOARCH)
+	@go build -o build/$$(go env GOOS)-$$(go env GOARCH)/$(BINNAME)
 
-.PHONY: xbuild
 xbuild: clean
 	@for target in \
 		darwin-amd64 \
@@ -31,7 +31,6 @@ xbuild: clean
 		GOOS="$${GOOS}" GOARCH="$${GOARCH}" go build -o "$${outdir}"/$(BINNAME) ./... ; \
 	done
 
-.PHONY: package
 package: xbuild
 	@mkdir -p dist
 	@cd build || exit 1; \
@@ -40,7 +39,6 @@ package: xbuild
 		cd $${built} && tar -czf ../../dist/$(PKGNAME)_$${built}.tar.gz * && cd - >/dev/null ; \
 	done
 
-.PHONY: clean
 clean:
 	@rm -rf \
 		/tmp/$(PKGNAME)-tests \
